@@ -1,0 +1,239 @@
+# ===============================
+# Dependencies
+# ===============================
+node_modules/
+.pnpm-store/
+.yarn/
+.yarn-cache/
+.npm/
+
+# ===============================
+# Environment variables
+# ===============================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# ===============================
+# Build outputs
+# ===============================
+dist/
+build/
+.out/
+.next/
+.turbo/
+coverage/
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===============================
+# OS / Editor files
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# Prisma
+# ===============================
+prisma/migrations/
+
+# ===============================
+# Database
+# ===============================
+*.sqlite
+*.db
+
+# ===============================
+# Docker
+# ===============================
+.dockerignore
+docker-compose.override.yml
+
+# ===============================
+# TurboRepo
+# ===============================
+.turbo/
+
+# ===============================
+# Cache
+# ===============================
+.cache/
+.eslintcache
+
+# ===============================
+# Test artifacts
+# ===============================
+playwright-report/
+test-results/
+# ===============================
+# Dependencies
+# ===============================
+node_modules/
+.pnpm-store/
+.yarn/
+.yarn-cache/
+.npm/
+
+# ===============================
+# Environment variables
+# ===============================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# ===============================
+# Build outputs
+# ===============================
+dist/
+build/
+.out/
+.next/
+.turbo/
+coverage/
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===============================
+# OS / Editor files
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# Prisma
+# ===============================
+prisma/migrations/
+
+# ===============================
+# Database
+# ===========================# ===============================
+# Dependencies
+# ===============================
+node_modules/
+.pnpm-store/
+.yarn/
+.yarn-cache/
+.npm/
+
+# ===============================
+# Environment variables
+# ===============================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# ===============================
+# Build outputs
+# ===============================
+dist/
+build/
+.out/
+.next/
+.turbo/
+coverage/
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===============================
+# OS / Editor files
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# Prisma
+# ===============================
+prisma/migrations/
+
+# ===============================
+# Database
+# ===============================
+*.sqlite
+*.db
+
+# ===============================
+# Docker
+# ===============================
+.dockerignore
+docker-compose.override.yml
+
+# ===============================
+# TurboRepo
+# ===============================
+.turbo/
+
+# ===============================
+# Cache
+# ===============================
+.cache/
+.eslintcache
+
+# ===============================
+# Test artifacts
+# ===============================
+playwright-report/
+test-results/
+
+*.sqlite
+*.db
+
+# ===============================
+# Docker
+# ===============================
+.dockerignore
+docker-compose.override.yml
+
+# ===============================
+# TurboRepo
+# ===============================
+.turbo/
+
+# ===============================
+# Cache
+# ===============================
+.cache/
+.eslintcache
+
+# ===============================
+# Test artifacts
+# ===============================
+playwright-report/
+test-results/
+
+/src/generated/prisma

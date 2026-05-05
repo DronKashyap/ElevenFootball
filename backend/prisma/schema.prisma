@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  email        String  @unique
+  name         String?
+  profileUrl   String?
+  password     String
+  location     String?
+  subscription String  @default("free")
+
+  // Self-referencing many-to-many (accepted friends)
+  friends  User[] @relation("UserFriends")
+  friendOf User[] @relation("UserFriends")
+
+  // Team relation
+  teams Team[] @relation("TeamPlayers")
+
+  // Self-referencing many-to-many (pending friend requests)
+  friendRequestsSent     User[] @relation("FriendRequests")
+  friendRequestsReceived User[] @relation("FriendRequests")
+
+  // relation
+  stats                UserStats?
+  organisedTournaments Tournament[]  @relation("TournamentOrganiser")
+  matchParticipations  MatchPlayer[]
+  events               MatchEvent[]  @relation("EventPlayer")
+  assists              MatchEvent[]  @relation("EventAssist")
+}
+
+model UserStats {
+  userId            Int @id
+  matchesPlayed     Int @default(0)
+  goals             Int @default(0)
+  assists           Int @default(0)
+  cleanSheets       Int @default(0)
+  tournamentsPlayed Int @default(0)
+  tournamentGoals   Int @default(0)
+  tournamentAssists Int @default(0)
+
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Team {
+  id                Int      @id @default(autoincrement())
+  name              String
+  matchesPlayed     Int      @default(0)
+  tournamentsPlayed Int      @default(0)
+  tournamentsWon    Int      @default(0)
+  logoUrl           String?
+  location          String?
+  createdAt         DateTime @default(now())
+
+  // Relations
+  players           User[]           @relation("TeamPlayers")
+  tournamentEntries TournamentTeam[]
+  homeMatches       Match[]          @relation("TeamA")
+  awayMatches       Match[]          @relation("TeamB")
+  matchPlayers      MatchPlayer[]
+  matchEvents       MatchEvent[]
+}
+
+model Tournament {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String?
+  location      String
+  date          DateTime
+  entryFee      Float
+  prize         Float
+  numberOfTeams Int
+  bannerUrl     String?
+  format        String?
+  rules         String?
+  facilities    String?
+
+  type      TournamentType
+  createdAt DateTime       @default(now())
+
+  // Relations
+  organiserId Int
+  organiser   User             @relation("TournamentOrganiser", fields: [organiserId], references: [id])
+  matches     Match[]
+  teams       TournamentTeam[]
+}
+
+model TournamentTeam {
+  id            Int           @id @default(autoincrement())
+  tournamentId  Int
+  teamId        Int
+  paymentStatus PaymentStatus @default(PENDING)
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+  team       Team       @relation(fields: [teamId], references: [id])
+
+  @@unique([tournamentId, teamId])
+}
+
+enum TournamentType {
+  KNOCKOUT
+  LEAGUE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model Match {
+  id Int @id @default(autoincrement())
+
+  tournamentId Int?
+  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+
+  teamAId Int
+  teamBId Int
+
+  teamA Team @relation("TeamA", fields: [teamAId], references: [id])
+  teamB Team @relation("TeamB", fields: [teamBId], references: [id])
+
+  scoreA Int @default(0)
+  scoreB Int @default(0)
+
+  status    MatchStatus @default(UPCOMING)
+  matchDate DateTime
+
+  venue    String?
+  duration Int? // in minutes (e.g., 90)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  players MatchPlayer[]
+  events  MatchEvent[]
+}
+
+model MatchPlayer {
+  id Int @id @default(autoincrement())
+
+  matchId  Int
+  playerId Int
+  teamId   Int
+
+  match  Match @relation(fields: [matchId], references: [id])
+  player User  @relation(fields: [playerId], references: [id])
+  team   Team  @relation(fields: [teamId], references: [id])
+
+  @@unique([matchId, playerId])
+}
+
+model MatchEvent {
+  id Int @id @default(autoincrement())
+
+  matchId  Int
+  playerId Int?
+  assistId Int?
+  teamId   Int
+
+  type   EventType
+  minute Int
+
+  match  Match @relation(fields: [matchId], references: [id])
+  player User? @relation("EventPlayer", fields: [playerId], references: [id])
+  assist User? @relation("EventAssist", fields: [assistId], references: [id])
+  team   Team  @relation(fields: [teamId], references: [id])
+}
+
+enum MatchStatus {
+  UPCOMING
+  LIVE
+  FINISHED
+}
+
+enum EventType {
+  GOAL
+  OWN_GOAL
+  ASSIST
+  YELLOW_CARD
+  RED_CARD
+  SUBSTITUTION
+}
